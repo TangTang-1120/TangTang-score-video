@@ -584,6 +584,21 @@ video {
   font-weight: 700;
 }
 
+.gallery-save-hint {
+  display: none;
+  margin: 10px 0 0;
+  max-width: 36rem;
+  color: var(--ink-dim);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+@media (pointer: coarse), (max-width: 720px) {
+  .gallery-save-hint {
+    display: block;
+  }
+}
+
 .video-card-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
