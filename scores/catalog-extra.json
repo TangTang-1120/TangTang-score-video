@@ -1,0 +1,18 @@
+[
+  {
+    "id": "hao-jiu-bu-jian",
+    "title": "好久不见",
+    "musicxml": "/Users/tangtang/kunming-gis-buildings/score-video-demo/scores/recognized/hao-jiu-bu-jian.musicxml",
+    "images": [
+      "/Users/tangtang/kunming-gis-buildings/score-video-demo/scores/recognized/hao-jiu-bu-jian.png"
+    ]
+  },
+  {
+    "id": "yi-bu-zhi-yao",
+    "title": "一步之遥",
+    "musicxml": "scores/recognized/yi-bu-zhi-yao.musicxml",
+    "images": [
+      "scores/recognized/yi-bu-zhi-yao.png"
+    ]
+  }
+]

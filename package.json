@@ -1,0 +1,30 @@
+{
+  "name": "score-video-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "start:fast": "NODE_OPTIONS=--max-old-space-size=4096 node src/server.mjs",
+    "web": "node src/server.mjs",
+    "demo:flow": "node scripts/record-flow-demo.mjs",
+    "warm": "node src/server.mjs",
+    "cello": "node src/standard-demo.mjs --cello scores/moon-river.musicxml",
+    "banner-audio": "node src/render-banner-audio.mjs scores/first-love.musicxml",
+    "build-refs": "node src/build-score-refs.mjs",
+    "standard": "node src/standard-demo.mjs",
+    "pair": "node src/cli-pair.mjs",
+    "mix": "node src/mix-vocal.mjs"
+  },
+  "dependencies": {
+    "@tonejs/midi": "^2.0.28",
+    "express": "^5.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "multer": "^2.0.2",
+    "sharp": "^0.33.5",
+    "verovio": "^5.2.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.1"
+  }
+}

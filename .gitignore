@@ -1,0 +1,17 @@
+node_modules/
+output/*
+!output/gallery/
+!output/gallery/**
+tools/
+assets/cello-mp3/
+public/audio/*.wav
+scores/omr-cache/
+scores/recognized/.mplconfig/
+*.partial
+.DS_Store
+.env
+.env.*
+*.dmg
+*.zip
+*.onnx
+*.oudep

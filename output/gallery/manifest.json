@@ -1,0 +1,44 @@
+{
+  "entries": [
+    {
+      "id": "omr-11111100",
+      "title": "一步之遥",
+      "artist": "未知歌手",
+      "hasPoster": true,
+      "addedAt": 1784282053312,
+      "updatedAt": 1784282330134
+    },
+    {
+      "id": "yi-bu-zhi-yao",
+      "title": "一步之遥",
+      "artist": "Carlos Gardel",
+      "hasPoster": true,
+      "addedAt": 1784281592973,
+      "updatedAt": 1784281985221
+    },
+    {
+      "id": "moon-river-first",
+      "title": "Moon River · 一把位",
+      "artist": "Henry Mancini",
+      "hasPoster": true,
+      "addedAt": 1784280428662,
+      "updatedAt": 1784281894453
+    },
+    {
+      "id": "moon-river-multi",
+      "title": "Moon River · 多把位",
+      "artist": "Henry Mancini",
+      "hasPoster": true,
+      "addedAt": 1784280384657,
+      "updatedAt": 1784281848759
+    },
+    {
+      "id": "hao-jiu-bu-jian",
+      "title": "好久不见",
+      "artist": "陈奕迅",
+      "hasPoster": true,
+      "addedAt": 1784278541760,
+      "updatedAt": 1784281811335
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tang-tang
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: USE_OEMER
+        value: "0"
+      - key: PORT
+        value: "8787"

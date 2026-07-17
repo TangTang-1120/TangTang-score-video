@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#070b10" />
+    <title>琴谱成片配色预览</title>
+    <style>
+      :root {
+        --ink: #e6f8f9;
+        --ink-dim: #8aaeb4;
+        --cyan-soft: #7aefe6;
+      }
+      body {
+        margin: 0;
+        font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+        background: #070b10;
+        color: var(--ink);
+        padding: 24px 16px 48px;
+      }
+      h1 {
+        font-size: 1.35rem;
+        margin: 0 0 8px;
+        color: var(--cyan-soft);
+      }
+      p {
+        color: var(--ink-dim);
+        margin: 0 0 24px;
+        line-height: 1.5;
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+      .swatch {
+        width: 120px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(62, 200, 210, 0.22);
+      }
+      .swatch i {
+        display: block;
+        height: 48px;
+      }
+      .swatch span {
+        display: block;
+        padding: 8px;
+        font-size: 12px;
+        background: rgba(18, 26, 34, 0.9);
+        color: var(--ink-dim);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      figure {
+        margin: 0;
+        background: rgba(18, 26, 34, 0.55);
+        border: 1px solid rgba(62, 200, 210, 0.18);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      img {
+        width: 100%;
+        display: block;
+        background: #111;
+      }
+      figcaption {
+        padding: 10px 12px;
+        font-size: 13px;
+        color: var(--ink-dim);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>琴谱成片配色预览</h1>
+    <p>竖屏跟谱帧 · 青／洋红赛博色系</p>
+    <div class="swatches">
+      <div class="swatch">
+        <i style="background: #ffffff; border-bottom: 1px solid #333"></i
+        ><span>谱纸底 #ffffff</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #2a6b72"></i><span>一把位青 #2a6b72</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #3d6f8c"></i><span>中把青蓝 #3d6f8c</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #a03d5c"></i><span>高把洋红 #a03d5c</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #c23d6e"></i><span>跟谱高亮 #c23d6e</span>
+      </div>
+      <div class="swatch">
+        <i style="background: rgba(194, 61, 110, 0.1)"></i
+        ><span>小节底 10%</span>
+      </div>
+    </div>
+    <div class="grid">
+      <figure>
+        <img src="vred-preview.jpg" alt="复古洋红跟谱" />
+        <figcaption>跟谱高亮 #c23d6e + 小节 10% 洋红底</figcaption>
+      </figure>
+      <figure>
+        <img src="pos-1st.jpg" alt="一把位" />
+        <figcaption>一把位 · 复古青条 #2a6b72</figcaption>
+      </figure>
+      <figure>
+        <img src="pos-4th.jpg" alt="四把位" />
+        <figcaption>四把位 · 复古洋红 #a03d5c（高把档）</figcaption>
+      </figure>
+      <figure>
+        <img src="pos-5th.jpg" alt="五把位" />
+        <figcaption>五把位 · 复古洋红 #a03d5c</figcaption>
+      </figure>
+      <figure>
+        <img src="solfege.jpg" alt="唱音阶" />
+        <figcaption>唱音阶轨 · 白谱纸 + 洋红跟谱</figcaption>
+      </figure>
+    </div>
+  </body>
+</html>

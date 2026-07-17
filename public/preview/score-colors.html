@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#070b10" />
+    <title>琴谱成片配色预览</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #e6f8f9;
+        --ink-dim: #8aaeb4;
+        --line: #2a3d48;
+        --surface: #121a22;
+        --cyan: #3ec8d2;
+        --cyan-soft: #7aefe6;
+        --magenta: #ff4d9a;
+      }
+      body {
+        margin: 0;
+        font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+        background: #070b10;
+        color: var(--ink);
+        padding: 24px 16px 48px;
+      }
+      h1 {
+        font-size: 1.35rem;
+        margin: 0 0 8px;
+        color: var(--cyan-soft);
+      }
+      .lead {
+        color: var(--ink-dim);
+        margin: 0 0 24px;
+        line-height: 1.55;
+        max-width: 40rem;
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+      .swatch {
+        width: 118px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(62, 200, 210, 0.22);
+      }
+      .swatch i {
+        display: block;
+        height: 48px;
+      }
+      .swatch span {
+        display: block;
+        padding: 8px;
+        font-size: 12px;
+        background: rgba(18, 26, 34, 0.9);
+        line-height: 1.35;
+        color: var(--ink-dim);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      figure {
+        margin: 0;
+        background: rgba(18, 26, 34, 0.55);
+        border: 1px solid rgba(62, 200, 210, 0.18);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      img {
+        width: 100%;
+        display: block;
+        background: #fff;
+      }
+      figcaption {
+        padding: 10px 12px;
+        font-size: 13px;
+        color: var(--ink-dim);
+      }
+      a.back {
+        color: var(--cyan-soft);
+        font-size: 14px;
+        text-decoration: none;
+      }
+      a.back:hover {
+        color: var(--magenta);
+      }
+    </style>
+  </head>
+  <body>
+    <p><a class="back" href="/">← 返回主页</a></p>
+    <h1>琴谱成片配色</h1>
+    <p class="lead">
+      白谱纸 · 复古洋红跟谱 · 当前小节淡洋红底 · 把位：复古青 / 青蓝 / 复古洋红（与站点赛博色系统一）
+    </p>
+    <div class="swatches">
+      <div class="swatch">
+        <i style="background: #ffffff; border-bottom: 1px solid #333"></i
+        ><span>谱纸底 #ffffff</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #c23d6e"></i><span>跟谱高亮 #c23d6e</span>
+      </div>
+      <div class="swatch">
+        <i
+          style="
+            background-color: #ffffff;
+            background-image: linear-gradient(
+              rgba(194, 61, 110, 0.1),
+              rgba(194, 61, 110, 0.1)
+            );
+          "
+        ></i
+        ><span>当前小节底 洋红10%</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #2a6b72"></i><span>一把位 #2a6b72</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #3d6f8c"></i><span>中把 #3d6f8c</span>
+      </div>
+      <div class="swatch">
+        <i style="background: #a03d5c"></i><span>高把 #a03d5c</span>
+      </div>
+    </div>
+    <div class="grid">
+      <figure>
+        <img src="style-solfege-1.jpg" alt="唱音阶跟谱" />
+        <figcaption>唱音阶 · 白底 + 当前小节洋红底 + 复古洋红音符</figcaption>
+      </figure>
+      <figure>
+        <img src="style-solfege-2.jpg" alt="跟谱推进" />
+        <figcaption>跟谱推进 · 洋红底随当前小节移动</figcaption>
+      </figure>
+      <figure>
+        <img src="style-cello-1.jpg" alt="大提琴一把位" />
+        <figcaption>大提琴 · 一把位复古青条</figcaption>
+      </figure>
+      <figure>
+        <img src="style-cello-4.jpg" alt="大提琴四把位" />
+        <figcaption>大提琴 · 高把复古洋红条</figcaption>
+      </figure>
+      <figure>
+        <img src="style-cello-5.jpg" alt="大提琴五把位" />
+        <figcaption>大提琴 · 高把／拇指复古洋红条</figcaption>
+      </figure>
+    </div>
+  </body>
+</html>
