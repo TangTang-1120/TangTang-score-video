@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/TangTang-score-video/" />
+    <meta name="tang-static" content="1" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#070b10" />
+    <title>Tang Tang 𝄢</title>
+    <link rel="icon" type="image/png" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <main class="shell">
+      <header class="hero-banner" id="hero-banner">
+        <div class="hero-copy">
+          <p class="brand">Tang Tang <span class="clef" aria-hidden="true">𝄢</span></p>
+          <div class="hero-intro">
+            <h1>上传电子谱，输出两支跟谱视频</h1>
+            <p class="lead">固定速度 ♩=72。</p>
+          </div>
+          <p class="hero-cue" id="hero-cue">在琴上滑动拉弓 · 出声</p>
+        </div>
+
+        <div class="hero-visual" id="hero-visual">
+          <div
+            class="cello-stage"
+            id="cello-stage"
+            role="application"
+            aria-label="大提琴拉弓交互"
+          >
+            <img
+              class="cello-img"
+              id="cello-img"
+              src="/assets/cello-hero.png"
+              alt=""
+              draggable="false"
+            />
+            <img
+              class="cello-bow"
+              id="cello-bow"
+              src="/assets/cello-bow.png"
+              alt=""
+              draggable="false"
+            />
+            <canvas class="ripple-canvas" id="ripple-canvas"></canvas>
+          </div>
+        </div>
+      </header>
+
+      <section class="gallery-panel" id="gallery-panel">
+        <div class="gallery-head">
+          <p class="gallery-kicker">成片</p>
+          <h2>跟谱视频</h2>
+        </div>
+        <div class="video-card-grid" id="video-card-grid"></div>
+      </section>
+
+      <section class="panel upload-panel-compact" id="upload-panel">
+        <form id="form">
+          <label class="sr-only" id="drop" for="file">上传谱面</label>
+          <input
+            id="file"
+            name="score"
+            type="file"
+            accept=".musicxml,.xml,.png,.jpg,.jpeg,.webp,image/*,application/xml,text/xml"
+            hidden
+          />
+          <span class="file-name" id="file-name"></span>
+          <button type="submit" class="cta" id="submit" hidden disabled>开始输出</button>
+        </form>
+        <p class="hint" id="upload-hint">
+          点上方「上传」卡片添加谱面 · PNG / MusicXML 均可
+        </p>
+      </section>
+
+      <section class="progress hidden" id="progress">
+        <div class="bar"><i id="bar"></i></div>
+        <p id="status">准备中…</p>
+      </section>
+
+      <section class="results hidden" id="results">
+        <h2 id="piece-title">输出成品</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>唱音阶</h3>
+            <video id="v-solfege" controls playsinline></video>
+            <a class="dl btn-dl" id="dl-solfege" href="#">下载唱音阶</a>
+          </article>
+          <article class="card">
+            <h3>大提琴 · 指法</h3>
+            <video id="v-cello" controls playsinline></video>
+            <a class="dl btn-dl" id="dl-cello" href="#">下载大提琴</a>
+          </article>
+        </div>
+        <p class="hint fingering-hint">
+          画面：白谱纸 · 复古洋红＝当前音 · 青绿＝一把位 · 复古橘红＝中把位 · 亮洋红＝高把／拇指
+        </p>
+        <a class="dl btn-dl wide" id="dl-fingerings" href="#">下载指法表（JSON）</a>
+        <button type="button" class="ghost" id="again">再传一首</button>
+      </section>
+    </main>
+    <audio id="first-love-audio" preload="auto" loop playsinline autoplay muted>
+      <source src="/audio/first-love-cello.mp3" type="audio/mpeg" />
+      <source src="/audio/first-love-cello.wav" type="audio/wav" />
+    </audio>
+    <script src="/download.js"></script>
+    <script src="/hero-cello.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
