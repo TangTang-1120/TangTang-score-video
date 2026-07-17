@@ -752,8 +752,8 @@ async function prewarmSampleCache() {
   console.log("预热完成：再次试听应接近秒开");
 }
 
-app.listen(PORT, () => {
-  console.log(`Tang Tang 𝄢  http://127.0.0.1:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Tang Tang 𝄢  http://0.0.0.0:${PORT}`);
   console.log(
     `出片：极速模式 FPS=${6} + 并行双轨 + OMR=${USE_OEMER ? "开" : "关"}（无模版猜曲）`
   );
