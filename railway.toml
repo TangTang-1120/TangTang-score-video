@@ -1,0 +1,12 @@
+# Railway (alternative)
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "node src/server.mjs"
+healthcheckPath = "/api/health"
+restartPolicyType = "ON_FAILURE"
+
+[env]
+NODE_ENV = "production"
+USE_OEMER = "0"
