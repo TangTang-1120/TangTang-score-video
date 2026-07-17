@@ -422,78 +422,73 @@
     synthNodes = null;
   }
 
+  let wantMusic = false;
+  let audioArmed = false;
+
   function siteUrl(path) {
     const clean = String(path || "").replace(/^\//, "");
     const base =
-      document.querySelector("base")?.href || `${location.origin}${location.pathname.replace(/[^/]*$/, "")}`;
+      document.querySelector("base")?.href ||
+      `${location.origin}${location.pathname.replace(/[^/]*$/, "")}`;
     return new URL(clean, base).href;
   }
 
-  function waitCanPlay(el, ms = 5000) {
-    if (el.readyState >= 2 && !el.error) return Promise.resolve(true);
-    return new Promise((resolve) => {
-      let done = false;
-      const finish = (ok) => {
-        if (done) return;
-        done = true;
-        el.removeEventListener("canplay", onOk);
-        el.removeEventListener("error", onErr);
-        clearTimeout(timer);
-        resolve(ok);
-      };
-      const onOk = () => finish(true);
-      const onErr = () => finish(false);
-      const timer = setTimeout(() => finish(el.readyState >= 2 && !el.error), ms);
-      el.addEventListener("canplay", onOk, { once: true });
-      el.addEventListener("error", onErr, { once: true });
-    });
+  function ensureAudioSrc() {
+    if (!audioEl) return "";
+    const src = siteUrl("audio/first-love-cello.mp3");
+    const alt = siteUrl("audio/hao-jiu-bu-jian-cello.mp3");
+    const cur = audioEl.currentSrc || "";
+    // 避免用 "/audio/" 字样（Pages 构建脚本会误改写）
+    const ok =
+      !audioEl.error &&
+      (cur.includes("first-love-cello") || cur.includes("hao-jiu-bu-jian-cello"));
+    if (!ok) {
+      audioEl.removeAttribute("src");
+      audioEl.innerHTML = "";
+      audioEl.src = src;
+      audioEl.load();
+    }
+    return audioEl.src || src || alt;
+  }
+
+  /** iOS：必须在 pointerdown 同步栈里 play/resume，否则 await 后会被静音策略拦截 */
+  function armAudioForGesture() {
+    ensureAudioSrc();
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+    } catch {
+      /* noop */
+    }
+    if (!audioEl) return;
+    try {
+      audioEl.muted = false;
+      audioEl.volume = 1;
+      const p = audioEl.play();
+      audioArmed = true;
+      if (p && typeof p.then === "function") {
+        p.catch(() => {
+          audioArmed = false;
+        });
+      }
+    } catch {
+      audioArmed = false;
+    }
   }
 
   async function startBrowserAudio() {
     if (!audioEl) return false;
     try {
+      ensureAudioSrc();
       await ensureAudioUnlocked();
-      const fallbacks = [
-        "audio/first-love-cello.mp3",
-        "audio/hao-jiu-bu-jian-cello.mp3",
-      ].map(siteUrl);
-
-      // 公网站 / 子路径下必须显式设对 src，不能依赖根路径 /audio/...
-      const needReload =
-        audioEl.error ||
-        audioEl.readyState < 2 ||
-        !audioEl.currentSrc ||
-        fallbacks.every((u) => !audioEl.currentSrc.includes("/audio/"));
-
-      if (needReload) {
-        for (const src of fallbacks) {
-          try {
-            const probe = await fetch(src, {
-              method: "GET",
-              headers: { Range: "bytes=0-1" },
-            });
-            if (!probe.ok) continue;
-            audioEl.pause();
-            audioEl.removeAttribute("src");
-            audioEl.innerHTML = "";
-            audioEl.src = src;
-            audioEl.load();
-            const ok = await waitCanPlay(audioEl);
-            if (ok) break;
-          } catch {
-            /* try next */
-          }
-        }
-      }
-
       audioEl.muted = false;
-      audioEl.volume = 0.9;
-      try {
-        // 取消 muted autoplay 后必须再 play 一次，部分浏览器才会出声
+      audioEl.volume = 1;
+      if (audioEl.paused) {
         await audioEl.play();
-      } catch (err) {
-        console.warn("[hero-cello] play() blocked", err);
-        return false;
       }
       return !audioEl.paused && !audioEl.muted;
     } catch (err) {
@@ -504,6 +499,7 @@
 
   /** 按住/滑过琴身 → 出声；松开离开 → 停 */
   async function startMusic() {
+    wantMusic = true;
     if (stopTimer) {
       clearTimeout(stopTimer);
       stopTimer = 0;
@@ -517,8 +513,27 @@
     startLock = (async () => {
       banner.classList.add("is-playing");
 
-      // 手机/远程：优先浏览器内播放（触控按下即可解锁）
+      // 手势里已同步 play 成功：直接认作出声
+      if (
+        wantMusic &&
+        audioEl &&
+        !audioEl.paused &&
+        !audioEl.muted &&
+        (audioArmed || audioEl.currentTime > 0 || audioEl.readyState >= 2)
+      ) {
+        playing = true;
+        audioMode = "file";
+        stopSynth();
+        setCuePlaying("拉弓中 · 大提琴");
+        return;
+      }
+
+      // 手机/远程：优先浏览器内播放
       const fileOk = await startBrowserAudio();
+      if (!wantMusic) {
+        audioEl?.pause();
+        return;
+      }
       if (fileOk) {
         playing = true;
         audioMode = "file";
@@ -530,6 +545,7 @@
       // 仅本机桌面可回退 afplay
       if (allowServerAudio && serverAudio) {
         const ok = await pingServerAudio("/api/banner-audio/start");
+        if (!wantMusic) return;
         if (ok) {
           playing = true;
           audioMode = "server";
@@ -542,9 +558,16 @@
         serverAudio = false;
       }
 
+      if (!wantMusic) return;
       audioMode = "synth";
       playing = true;
       await startSynth();
+      if (!wantMusic) {
+        stopSynth();
+        playing = false;
+        audioMode = "none";
+        return;
+      }
       if (synthNodes && audioCtx?.state === "running") {
         setCuePlaying("拉弓中 · 大提琴曲");
         return;
@@ -563,6 +586,8 @@
   }
 
   function stopMusic() {
+    wantMusic = false;
+    audioArmed = false;
     clearKeepAlive();
     playing = false;
     banner.classList.remove("is-playing");
@@ -596,6 +621,7 @@
     onPointerMove(e);
     bowEnergy = Math.min(1, bowEnergy + 0.55);
     emitFromBow(true);
+    armAudioForGesture();
     startMusic();
   }
 
@@ -657,6 +683,7 @@
     pointerInside = true;
     banner.classList.add("is-hover");
     lastPointerX = localXY(e).x;
+    armAudioForGesture();
     startMusic();
   });
   stage.addEventListener("pointerleave", (e) => {
@@ -682,6 +709,7 @@
   raf = requestAnimationFrame(frame);
 
   setCueIdle();
+  ensureAudioSrc();
   fetch("/api/health")
     .then((r) => r.json())
     .then((h) => {
