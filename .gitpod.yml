@@ -1,0 +1,13 @@
+# https://www.gitpod.io/
+tasks:
+  - name: Install & Start Tang Tang
+    init: npm install --omit=dev
+    command: NODE_ENV=production USE_OEMER=0 node src/server.mjs
+
+ports:
+  - port: 8787
+    onOpen: open-preview
+    visibility: public
+
+vscode:
+  extensions: []
