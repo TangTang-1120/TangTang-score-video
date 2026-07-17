@@ -137,7 +137,7 @@ async function loadLibrary() {
           <h2>还没有曲目</h2>
           <p>回首页一键试听或上传谱面，成片后会自动出现在这里</p>
         </div>
-        <a class="btn-dl library-dl" href="/">回首页</a>
+        <a class="btn-dl library-dl" href="/TangTang-score-video/">回首页</a>
       `;
       listEl.appendChild(empty);
       return;
@@ -150,7 +150,7 @@ async function loadLibrary() {
       const used = formatTime(entry.lastUsedAt);
       const action = entry.canDemo
         ? `<button type="button" class="btn-dl library-dl" data-demo="${escapeHtml(entry.id)}">试听出片</button>`
-        : `<a class="ghost library-dl" href="/">去上传</a>`;
+        : `<a class="ghost library-dl" href="/TangTang-score-video/">去上传</a>`;
       row.innerHTML = `
         <div class="library-row-copy">
           <h2>${escapeHtml(entry.title)}</h2>

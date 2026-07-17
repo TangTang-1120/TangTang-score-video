@@ -198,16 +198,16 @@ async function loadGallery() {
   }
   if (!entries.length) {
     try {
-      const res = await fetch("gallery/manifest.json");
+      const res = await fetch("/TangTang-score-video/gallery/manifest.json");
       if (res.ok) {
         const data = await res.json();
         entries = (Array.isArray(data.entries) ? data.entries : []).map((e) => ({
           ...e,
-          videoUrl: `gallery/${e.id}/cello.mp4`,
-          solfegeUrl: `gallery/${e.id}/solfege.mp4`,
-          posterUrl: e.hasPoster ? `gallery/${e.id}/poster.jpg` : null,
-          downloadCelloUrl: `gallery/${e.id}/cello.mp4`,
-          downloadSolfegeUrl: `gallery/${e.id}/solfege.mp4`,
+          videoUrl: `/TangTang-score-video/gallery/${e.id}/cello.mp4`,
+          solfegeUrl: `/TangTang-score-video/gallery/${e.id}/solfege.mp4`,
+          posterUrl: e.hasPoster ? `/TangTang-score-video/gallery/${e.id}/poster.jpg` : null,
+          downloadCelloUrl: `/TangTang-score-video/gallery/${e.id}/cello.mp4`,
+          downloadSolfegeUrl: `/TangTang-score-video/gallery/${e.id}/solfege.mp4`,
         }));
       }
     } catch {

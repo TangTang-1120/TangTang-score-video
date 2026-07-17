@@ -429,8 +429,8 @@
       // 若当前 source 404，尝试备用封面音
       if (audioEl.error || audioEl.readyState === 0) {
         const fallbacks = [
-          "/audio/first-love-cello.mp3",
-          "/audio/hao-jiu-bu-jian-cello.mp3",
+          "/TangTang-score-video/audio/first-love-cello.mp3",
+          "/TangTang-score-video/audio/hao-jiu-bu-jian-cello.mp3",
         ];
         for (const src of fallbacks) {
           try {
