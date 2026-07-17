@@ -139,13 +139,20 @@ if (!app.includes("STATIC_GALLERY_FALLBACK")) {
     }
   }
 
-  grid.innerHTML = staticMode
-    ? entries.map((e) => videoCardHtml(e)).join("")
-    : uploadCardHtml() + entries.map((e) => videoCardHtml(e)).join("");
+  grid.innerHTML =
+    uploadCardHtml() + entries.map((e) => videoCardHtml(e)).join("");
 
   const uploadCard = document.getElementById("upload-card");
   if (uploadCard) {
-    uploadCard.addEventListener("click", () => fileInput.click());
+    uploadCard.addEventListener("click", () => {
+      if (staticMode) {
+        window.alert(
+          "公网展示站暂不支持上传识谱（需要服务器）。\\n请本机运行 npm start 后上传；这里可直接播放 / 下载成片。"
+        );
+        return;
+      }
+      fileInput.click();
+    });
   }`
   );
   fs.writeFileSync(appPath, app);

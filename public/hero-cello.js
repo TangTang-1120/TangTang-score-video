@@ -422,45 +422,80 @@
     synthNodes = null;
   }
 
+  function siteUrl(path) {
+    const clean = String(path || "").replace(/^\//, "");
+    const base =
+      document.querySelector("base")?.href || `${location.origin}${location.pathname.replace(/[^/]*$/, "")}`;
+    return new URL(clean, base).href;
+  }
+
+  function waitCanPlay(el, ms = 5000) {
+    if (el.readyState >= 2 && !el.error) return Promise.resolve(true);
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = (ok) => {
+        if (done) return;
+        done = true;
+        el.removeEventListener("canplay", onOk);
+        el.removeEventListener("error", onErr);
+        clearTimeout(timer);
+        resolve(ok);
+      };
+      const onOk = () => finish(true);
+      const onErr = () => finish(false);
+      const timer = setTimeout(() => finish(el.readyState >= 2 && !el.error), ms);
+      el.addEventListener("canplay", onOk, { once: true });
+      el.addEventListener("error", onErr, { once: true });
+    });
+  }
+
   async function startBrowserAudio() {
     if (!audioEl) return false;
     try {
       await ensureAudioUnlocked();
-      // 若当前 source 404，尝试备用封面音
-      if (audioEl.error || audioEl.readyState === 0) {
-        const fallbacks = [
-          "/audio/first-love-cello.mp3",
-          "/audio/hao-jiu-bu-jian-cello.mp3",
-        ];
+      const fallbacks = [
+        "audio/first-love-cello.mp3",
+        "audio/hao-jiu-bu-jian-cello.mp3",
+      ].map(siteUrl);
+
+      // 公网站 / 子路径下必须显式设对 src，不能依赖根路径 /audio/...
+      const needReload =
+        audioEl.error ||
+        audioEl.readyState < 2 ||
+        !audioEl.currentSrc ||
+        fallbacks.every((u) => !audioEl.currentSrc.includes("/audio/"));
+
+      if (needReload) {
         for (const src of fallbacks) {
           try {
-            const head = await fetch(src, { method: "HEAD" });
-            if (!head.ok) continue;
+            const probe = await fetch(src, {
+              method: "GET",
+              headers: { Range: "bytes=0-1" },
+            });
+            if (!probe.ok) continue;
+            audioEl.pause();
+            audioEl.removeAttribute("src");
+            audioEl.innerHTML = "";
             audioEl.src = src;
-            await audioEl.load?.();
-            break;
+            audioEl.load();
+            const ok = await waitCanPlay(audioEl);
+            if (ok) break;
           } catch {
             /* try next */
           }
         }
       }
+
       audioEl.muted = false;
       audioEl.volume = 0.9;
-      if (audioEl.ended || audioEl.currentTime > 0.2) {
-        /* keep position if already playing */
-      }
-      if (audioEl.paused) {
-        try {
-          audioEl.currentTime = Math.min(
-            audioEl.currentTime || 0,
-            Math.max(0, (audioEl.duration || 1) - 0.5)
-          );
-        } catch {
-          /* noop */
-        }
+      try {
+        // 取消 muted autoplay 后必须再 play 一次，部分浏览器才会出声
         await audioEl.play();
+      } catch (err) {
+        console.warn("[hero-cello] play() blocked", err);
+        return false;
       }
-      return !audioEl.paused;
+      return !audioEl.paused && !audioEl.muted;
     } catch (err) {
       console.warn("[hero-cello] browser audio failed", err);
       return false;
