@@ -1,20 +1,17 @@
-# GitHub Codespaces / VS Code Dev Container
 {
   "name": "Tang Tang",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
-  "features": {},
   "forwardPorts": [8787],
   "portsAttributes": {
     "8787": {
-      "label": "Tang Tang",
-      "onAutoForward": "notify"
+      "label": "Tang Tang Web",
+      "onAutoForward": "openBrowser"
     }
   },
   "postCreateCommand": "npm install --omit=dev",
-  "postStartCommand": "NODE_ENV=production USE_OEMER=0 node src/server.mjs",
-  "customizations": {
-    "vscode": {
-      "extensions": []
-    }
+  "postStartCommand": "NODE_ENV=production USE_OEMER=0 PORT=8787 node src/server.mjs",
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
   }
 }
