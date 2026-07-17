@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for Tang Tang
+app = 'tangtang-score-video'
+primary_region = 'sin'
+
+[build]
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[env]
+  NODE_ENV = 'production'
+  USE_OEMER = '0'
+  PORT = '8787'
